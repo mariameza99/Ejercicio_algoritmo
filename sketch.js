@@ -14,6 +14,9 @@ function draw() {
   rect(140, 65, 170, 170);
   rect(565, 65, 170, 170);
   rect(965, 65, 170, 170);
+  rect(345, 350, 170, 170);
+  rect(765, 350, 170, 170);
+
   text('EcuPP', 200, 35);
   ecuPP(p1, p2);
   ecuPP(p3, p4);
@@ -33,6 +36,13 @@ function draw() {
   bresenham(1000,200,1100,100);
   bresenham(980,150,1120,150);
   bresenham(1050,80,1050,220);
+
+  text('Punto medio circulo', 380, 320);
+  circPM(430,430,50);
+
+
+  text('Punto medio elipse', 795, 320);
+  elipPM(850, 430, 60, 25)
 }
 
 function ecuPP(p1,p2) {
@@ -152,6 +162,99 @@ function bresenham(x1,y1,x2,y2) {
         point(x,y)
       }
     }
+  }
+
+}
+
+function circPM(xc, yc, r){
+  let p = Math.round(5/4)
+  let x = 0
+  let y = r
+
+  point(xc + x, yc + y)
+  point(xc + x, yc - y)
+  point(xc - x, yc - y)
+  point(xc - x, yc + y)
+  point(yc - y, xc + x)
+  point(yc + y, xc - x)
+  point(yc + y, xc + x)
+  point(yc - y, xc - x)
+
+  while(x < y){
+    x++
+    if(p < 0){
+      p = p + 2 * x +1
+    }else{
+      y--
+      p = p + 2 * (x - y) + 1
+    }
+    point(xc + x, yc + y)
+    point(xc + x, yc - y)
+    point(xc - x, yc - y)
+    point(xc - x, yc + y)
+    point(yc - y, xc + x)
+    point(yc + y, xc - x)
+    point(yc + y, xc + x)
+    point(yc - y, xc - x)
+  }
+}
+
+function elipPM(xc, yc, rx, ry){
+  let x,y,p1,px,py
+  let rx2, ry2, rx22, ry22
+
+  rx2 = rx*rx
+  ry2 = ry*ry
+  rx22 = 2*rx2 
+  ry22 = 2*ry2
+
+  x=0
+  y=ry
+
+  point(xc + x, yc + y);
+  point(xc + x, yc - y);
+  point(xc - x, yc + y);
+  point(xc - x, yc - y);
+
+  p1 = Math.round(ry2 - rx2*ry + 0.25*rx2)
+  px = 0
+
+  py = rx22*y
+
+  while(px < py){
+    x++
+    px = px + ry22
+    if (p1 < 0){
+      p1 = p1 + ry2 + px
+    }else {
+      y--
+      py = py-rx22
+      p1 = p1+ry2+px-py
+    }
+    point(xc + x, yc + y);
+    point(xc + x, yc - y);
+    point(xc - x, yc + y);
+    point(xc - x, yc - y);
+  }
+
+  p1 = Math.round(ry2*(x+0.5)*(x+0.5)+rx2*(y-1)*(y-1)-rx2*ry2)
+  px=0
+  py=rx22*y
+
+  while(y > 0){
+    y--
+    py = py-rx22
+    if(p1>0){
+      p1 = p1 + rx2 - py
+    }else{
+      x++
+      px = px + ry22
+      p1 = p1 + rx2 + py + px
+    }
+    point(xc + x, yc + y);
+    point(xc + x, yc - y);
+    point(xc - x, yc + y);
+    point(xc - x, yc - y);
   }
 
 }
